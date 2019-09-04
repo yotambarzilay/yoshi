@@ -1,0 +1,27 @@
+{
+  "name": "yoshi-flow-editor-runtime",
+  "version": "4.17.0",
+  "main": "build/index.js",
+  "sideEffects": false,
+  "keywords": [
+    "yoshi",
+    "editor",
+    "runtime"
+  ],
+  "author": "Ran Yitzhaki",
+  "license": "ISC",
+  "dependencies": {
+    "@wix/native-components-infra": "^1.0.571",
+    "@wix/wix-experiments": "^3.0.218",
+    "prop-types": "^15.7.2",
+    "tpa-style-webpack-plugin": "^1.3.11"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^16.9.9",
+    "react": "^16.9.0"
+  }
+}

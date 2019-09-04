@@ -3,8 +3,10 @@ const { viewerUrl } = require('../../dev/sites');
 describe('Viewer App', () => {
   it('should display the title text', async () => {
     await page.goto(viewerUrl);
-    await page.waitForSelector('h2');
+    await page.waitForSelector('button[type="submit"]');
 
-    expect(await page.$eval('h2', e => e.textContent)).toEqual('Hello World!');
+    expect(
+      await page.$eval('button[type="submit"]', e => e.textContent),
+    ).toEqual('Add Todo');
   });
 });

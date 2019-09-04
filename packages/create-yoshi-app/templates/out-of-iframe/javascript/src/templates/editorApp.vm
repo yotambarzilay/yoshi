@@ -5,12 +5,13 @@
     <title>${title}</title>
     <script src="https://${clientTopology.staticsDomain}/polyfill/v2/polyfill#if(!${debug}).min#{end}.js?features=default,es6,es7,es2017&flags=gated&unknown=polyfill&rum=0"></script>
     <script
-      src="https://${clientTopology.staticsDomain}/unpkg/react@16.6.3/umd/react#if(${debug}).development#else.production.min#{end}.js"
+      src="https://${clientTopology.staticsDomain}/unpkg/react@16.9.0/umd/react#if(${debug}).development#else.production.min#{end}.js"
       crossorigin="anonymous"></script>
     <script
-      src="https://${clientTopology.staticsDomain}/unpkg/react-dom@16.6.3/umd/react-dom#if(${debug}).development#else.production.min#{end}.js"
+      src="https://${clientTopology.staticsDomain}/unpkg/react-dom@16.9.0/umd/react-dom#if(${debug}).development#else.production.min#{end}.js"
       crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://static.parastorage.com/services/js-sdk/1.106.0/js/wix-private.min.js"></script>
+    <script type="text/javascript" src="https://static.parastorage.com/services/js-sdk/1.108.0/js/wix-private.min.js"></script>
+
   </head>
   <body>
     <div id="root"></div>

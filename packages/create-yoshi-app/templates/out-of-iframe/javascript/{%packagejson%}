@@ -8,9 +8,9 @@
     "email": "{%authorEmail%}"
   },
   "scripts": {
-    "start": "yoshi start --entry-point=dist/server.js",
+    "start": "yoshi-flow-editor start --entry-point=dist/server.js",
     "precommit": "lint-staged",
-    "pretest": "yoshi build",
+    "pretest": "yoshi-flow-editor build",
     "test": "yoshi test --jest",
     "test:ssr": "jest --config jest-ssr.config.js",
     "posttest": "yoshi lint",
@@ -29,6 +29,7 @@
     "react-test-renderer": "~15.6.0",
     "velocity": "~0.7.0",
     "yoshi": "^4.6.3",
+    "yoshi-flow-editor": "latest",
     "yoshi-style-dependencies": "^4.6.0"
   },
   "dependencies": {
@@ -41,11 +42,13 @@
     "i18next": "^11.6.0",
     "lodash": "^4.17.11",
     "prop-types": "~15.6.0",
-    "react": "~16.6.2",
-    "react-dom": "~16.6.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-i18next": "^7.11.0",
-    "tpa-style-webpack-plugin": "^1.3.11",
-    "wix-ui-tpa": "^1.0.123"
+    "tpa-style-webpack-plugin": "^1.3.9",
+    "uuid": "^3.3.2",
+    "wix-ui-tpa": "^1.0.123",
+    "yoshi-flow-editor-runtime": "*"
   },
   "lint-staged": {
     "*.{js,scss,less}": "yoshi lint"
@@ -54,6 +57,9 @@
     "preset": "jest-yoshi-preset"
   },
   "eslintConfig": {
-    "extends": "yoshi"
+    "extends": "yoshi",
+    "globals": {
+      "Wix": false
+    }
   }
 }

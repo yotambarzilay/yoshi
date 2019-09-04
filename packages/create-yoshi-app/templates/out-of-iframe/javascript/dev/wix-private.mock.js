@@ -24,6 +24,10 @@ if (window.Wix && window.Wix.Utils.getViewMode() === 'standalone') {
       });
     }
 
+    addEventListener(eventName, cb) {
+      console.log(eventName, cb);
+    }
+
     Utils = {
       getViewMode() {
         return 'standalone';
@@ -49,6 +53,7 @@ if (window.Wix && window.Wix.Utils.getViewMode() === 'standalone') {
 
     Events = {
       INSTANCE_CHANGED: 'INSTANCE_CHANGED',
+      PUBLIC_DATA_CHANGED: 'PUBLIC_DATA_CHANGED',
     };
 
     Styles = {
@@ -56,6 +61,13 @@ if (window.Wix && window.Wix.Utils.getViewMode() === 'standalone') {
       getSiteTextPresets: cb => cb(this.siteTextPresets),
       getStyleParams: cb => cb(this.styleParams),
       getStyleId: cb => cb('style-jp8ide5x'),
+    };
+
+    Data = {
+      Public: {
+        getAll: cb => cb({}),
+        set: () => {},
+      },
     };
   })();
 }

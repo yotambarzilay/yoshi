@@ -29,6 +29,15 @@ export const unprocessedModules = (p: string) => {
     );
   };
 
+  // TODO - this is a hack!
+  // We process yoshi-flow-editor contents temporarily
+  //
+  // Remove this when yoshi-flow-editor's output will be transpiled
+  // using TypeScript for example, and this would not be needed.
+  const isYoshiFlowEditorFramework = (filePath: string) => {
+    return filePath.includes('yoshi-flow-editor');
+  };
+
   const externalUnprocessedModules = ['wix-style-react/src'].concat(
     config.externalUnprocessedModules,
   );
@@ -39,7 +48,8 @@ export const unprocessedModules = (p: string) => {
 
   return (
     externalRegexList.some(regex => regex.test(p)) ||
-    allSourcesButExternalModules(p)
+    allSourcesButExternalModules(p) ||
+    isYoshiFlowEditorFramework(p)
   );
 };
 

@@ -1,7 +1,7 @@
 describe('Settings Panel', () => {
-  it('should display 3 sections', async () => {
+  it('should display 1 header', async () => {
     await page.goto('https://localhost:3100/settingsPanel');
 
-    expect(await page.$$eval('section', sections => sections.length)).toBe(3);
+    expect(await page.$$eval('h2', headers => headers.length)).toBe(1);
   });
 });
