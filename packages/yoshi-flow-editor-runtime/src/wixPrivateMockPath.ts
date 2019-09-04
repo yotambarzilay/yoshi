@@ -1,11 +1,11 @@
 import * as fakeTpaResponse from './fake-tpa-response.json';
 
-if (window.Wix && window.Wix.Utils.getViewMode() === 'standalone') {
-  window.Wix = new (class WixMock {
+if (window.Wix && (window.Wix as any).Utils.getViewMode() === 'standalone') {
+  (window.Wix as any) = new (class WixMock {
     modelCache = {};
-    siteColors;
-    siteTextPresets;
-    styleParams;
+    siteColors: any;
+    siteTextPresets: any;
+    styleParams: any;
 
     constructor() {
       this.siteColors = fakeTpaResponse.res.siteColors;
@@ -13,22 +13,20 @@ if (window.Wix && window.Wix.Utils.getViewMode() === 'standalone') {
       this.styleParams = fakeTpaResponse.res.style;
     }
 
-    getComponentInfo() {
+    public getComponentInfo() {
       return 'componentInfo';
     }
 
-    getSiteInfo(cb) {
+    public getSiteInfo(cb: Function) {
       cb({
         url: 'https://wix.com/my-site',
         baseUrl: 'https://wix.com/',
       });
     }
 
-    addEventListener(eventName, cb) {
-      console.log(eventName, cb);
-    }
+    public addEventListener() {}
 
-    Utils = {
+    public Utils = {
       getViewMode() {
         return 'standalone';
       },
@@ -49,23 +47,21 @@ if (window.Wix && window.Wix.Utils.getViewMode() === 'standalone') {
       },
     };
 
-    addEventListener = () => {};
-
-    Events = {
+    public Events = {
       INSTANCE_CHANGED: 'INSTANCE_CHANGED',
       PUBLIC_DATA_CHANGED: 'PUBLIC_DATA_CHANGED',
     };
 
-    Styles = {
-      getSiteColors: cb => cb(this.siteColors),
-      getSiteTextPresets: cb => cb(this.siteTextPresets),
-      getStyleParams: cb => cb(this.styleParams),
-      getStyleId: cb => cb('style-jp8ide5x'),
+    public Styles = {
+      getSiteColors: (cb: Function) => cb(this.siteColors),
+      getSiteTextPresets: (cb: Function) => cb(this.siteTextPresets),
+      getStyleParams: (cb: Function) => cb(this.styleParams),
+      getStyleId: (cb: Function) => cb('style-jp8ide5x'),
     };
 
-    Data = {
+    public Data = {
       Public: {
-        getAll: cb => cb({}),
+        getAll: (cb: Function) => cb({}),
         set: () => {},
       },
     };

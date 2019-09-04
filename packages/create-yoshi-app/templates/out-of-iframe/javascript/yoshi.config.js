@@ -19,21 +19,6 @@ module.exports = {
       root: 'ReactDOM',
     },
   },
-  entry: {
-    // settingsPanel: './settingsPanel/settingsPanel.js',
-    // editorApp: './editorApp/editorApp.js',
-    // viewerWidget: './viewerApp/viewerWidget.js',
-    // 'wix-private-mock': '../dev/wix-private.mock.js',
-  },
-  webWorker: {
-    externals: {
-      lodash: {
-        commonjs: 'lodash',
-        amd: 'lodash',
-        root: '_',
-      },
-    },
-  },
   servers: {
     cdn: {
       ssl: true,

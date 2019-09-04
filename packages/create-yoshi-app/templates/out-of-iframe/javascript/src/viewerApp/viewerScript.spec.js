@@ -21,6 +21,11 @@ describe('createControllers', () => {
         site: {
           language: 'en',
         },
+        user: {
+          currentUser: {
+            id: 'userId',
+          },
+        },
       },
     };
   });
