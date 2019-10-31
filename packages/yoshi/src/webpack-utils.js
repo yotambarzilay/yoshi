@@ -8,11 +8,15 @@ const clearConsole = require('react-dev-utils/clearConsole');
 const { prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const rootApp = require('yoshi-config/root-app');
-const { PORT } = require('./constants');
+const { PORT, suricateURL } = require('./constants');
 const { redirectMiddleware } = require('../src/tasks/cdn/server-api');
 const WebpackDevServer = require('webpack-dev-server');
 const Watchpack = require('watchpack');
-const { shouldDeployToCDN, inTeamCity } = require('yoshi-helpers/queries');
+const {
+  shouldDeployToCDN,
+  inTeamCity,
+  guessSuricateTunnelId,
+} = require('yoshi-helpers/queries');
 const { getProjectCDNBasePath } = require('yoshi-helpers/utils');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -65,16 +69,24 @@ function createCompiler(app, config, { https }) {
         );
         console.log();
 
-        console.log(
-          `  ${chalk.bold('Local:')}            ${
-            serverUrls.localUrlForTerminal
-          }`,
-        );
-        console.log(
-          `  ${chalk.bold('On Your Network:')}  ${
-            serverUrls.lanUrlForTerminal
-          }`,
-        );
+        if (app.suricate) {
+          console.log(
+            `  ${chalk.bold(
+              'Public URL:',
+            )}  ${suricateURL}/tunnel/${guessSuricateTunnelId(app.name)}`,
+          );
+        } else {
+          console.log(
+            `  ${chalk.bold('Local:')}            ${
+              serverUrls.localUrlForTerminal
+            }`,
+          );
+          console.log(
+            `  ${chalk.bold('On Your Network:')}  ${
+              serverUrls.lanUrlForTerminal
+            }`,
+          );
+        }
 
         console.log();
         console.log(
@@ -84,16 +96,26 @@ function createCompiler(app, config, { https }) {
         );
         console.log();
 
-        console.log(
-          `  ${chalk.bold('Local:')}            ${
-            devServerUrls.localUrlForTerminal
-          }`,
-        );
-        console.log(
-          `  ${chalk.bold('On Your Network:')}  ${
-            devServerUrls.lanUrlForTerminal
-          }`,
-        );
+        if (app.suricate) {
+          console.log(
+            `  ${chalk.bold(
+              'Public URL:',
+            )}  ${suricateURL}/tunnel/${guessSuricateTunnelId(
+              `${app.name}-dev-server`,
+            )}`,
+          );
+        } else {
+          console.log(
+            `  ${chalk.bold('Local:')}            ${
+              devServerUrls.localUrlForTerminal
+            }`,
+          );
+          console.log(
+            `  ${chalk.bold('On Your Network:')}  ${
+              devServerUrls.lanUrlForTerminal
+            }`,
+          );
+        }
 
         console.log();
         console.log('Note that the development build is not optimized.');
@@ -192,7 +214,12 @@ function createDevServer(
     ],
     before(expressApp) {
       // Send cross origin headers
-      expressApp.use(cors());
+      expressApp.use(
+        cors({
+          origin: (requestOrigin, cb) => cb(null, true),
+          credentials: true,
+        }),
+      );
       // Redirect `.min.(js|css)` to `.(js|css)`
       expressApp.use(redirectMiddleware(host, app.servers.cdn.port));
     },

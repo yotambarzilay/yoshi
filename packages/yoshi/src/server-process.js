@@ -5,8 +5,10 @@ const child_process = require('child_process');
 const fs = require('fs-extra');
 const rootApp = require('yoshi-config/root-app');
 const SocketServer = require('./socket-server');
-const { PORT } = require('./constants');
+const { PORT, suricateURL } = require('./constants');
 const { getDevelopmentEnvVars } = require('yoshi-helpers/bootstrap-utils');
+const { socket } = require('@wix/suricate-client');
+const { guessSuricateTunnelId } = require('yoshi-helpers/queries');
 
 function serverLogPrefixer() {
   return new stream.Transform({
@@ -28,6 +30,15 @@ module.exports = class ServerProcess {
   }
 
   async initialize() {
+    if (this.app.suricate) {
+      socket({
+        target: {
+          port: PORT,
+        },
+        url: suricateURL,
+        tunnelID: guessSuricateTunnelId(this.app.name),
+      });
+    }
     await this.socketServer.initialize();
 
     const bootstrapEnvironmentParams = getDevelopmentEnvVars({

@@ -21,7 +21,7 @@ const WriteFilePlugin = require('write-file-webpack-plugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlPolyfillPlugin = require('./html-polyfill-plugin');
-const { localIdentName } = require('../src/constants');
+const { localIdentName, suricateURL } = require('../src/constants');
 const EnvironmentMarkPlugin = require('../src/webpack-plugins/environment-mark-plugin');
 const ExportDefaultPlugin = require('../src/webpack-plugins/export-default-plugin');
 const rootApp = require('yoshi-config/root-app');
@@ -31,6 +31,7 @@ const {
   inTeamCity: checkInTeamCity,
   isTypescriptProject: checkIsTypescriptProject,
   exists,
+  guessSuricateTunnelId,
 } = require('yoshi-helpers/queries');
 const {
   tryRequire,
@@ -834,7 +835,13 @@ function createClientWebpackConfig({
       require.resolve('webpack/hot/dev-server'),
       // Adding the query param with the CDN URL allows HMR when working with a production site
       // because the bundle is requested from "parastorage" we need to specify to open the socket to localhost
-      `${require.resolve('webpack-dev-server/client')}?${app.servers.cdn.url}`,
+      `${require.resolve('webpack-dev-server/client')}?${
+        app.suricate
+          ? `${suricateURL}/tunnel/${guessSuricateTunnelId(
+              `${app.name}-dev-server`,
+            )}/`
+          : app.servers.cdn.url
+      }`,
     ]);
   }
 

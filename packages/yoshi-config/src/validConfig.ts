@@ -73,6 +73,7 @@ const validConfig: RequiredRecursively<InitialConfig> = {
     ),
     externals: multipleValidOptions(['React'], { react: 'React' }),
   },
+  suricate: true,
 };
 
 export default validConfig;

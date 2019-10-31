@@ -80,6 +80,8 @@ export default (initialConfig: InitialConfig, pkgJson: PackageJson): Config => {
 
     isAngularProject: !!dependencies.angular || !!peerDependencies.angular,
     isReactProject: !!dependencies.react || !!peerDependencies.react,
+
+    suricate: get(c => c.suricate, false),
   };
 
   return config;

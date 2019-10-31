@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const chalk = require('chalk');
 const openBrowser = require('./open-browser');
 const { isWebWorkerBundle } = require('yoshi-helpers/queries');
-const { PORT } = require('../../constants');
+const { PORT, suricateURL } = require('../../constants');
 const {
   createClientWebpackConfig,
   createServerWebpackConfig,
@@ -17,6 +17,8 @@ const {
 const ServerProcess = require('../../server-process');
 const detect = require('detect-port');
 const { watchPublicFolder } = require('./copy-assets');
+const { socket } = require('@wix/suricate-client');
+const { guessSuricateTunnelId } = require('yoshi-helpers/queries');
 
 const host = '0.0.0.0';
 
@@ -173,7 +175,14 @@ module.exports = async (app, options) => {
 
   // Start up webpack dev server
   await new Promise((resolve, reject) => {
-    devServer.listen(app.servers.cdn.port, host, err =>
+    const listenTarget = app.suricate
+      ? socket({
+          url: suricateURL,
+          tunnelID: guessSuricateTunnelId(`${app.name}-dev-server`),
+        })
+      : app.servers.cdn.port;
+
+    devServer.listen(listenTarget, host, err =>
       err ? reject(err) : resolve(devServer),
     );
   });

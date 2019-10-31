@@ -34,6 +34,7 @@
     "@svgr/webpack": "4.3.3",
     "@types/graphql": "14.2.3",
     "@wix/depkeeper-preset-yoshi": "1.0.80",
+    "@wix/suricate-client": "0.0.1",
     "autoprefixer": "9.7.0",
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",

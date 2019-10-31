@@ -8,3 +8,5 @@ module.exports.localIdentName = {
 module.exports.PORT = parseInt(process.env.PORT, 10) || 3000;
 
 module.exports.minimumNodeVersion = '8.7.0';
+
+module.exports.suricateURL = 'https://bo.wix.com/suricate';

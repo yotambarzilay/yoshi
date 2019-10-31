@@ -3,7 +3,8 @@ import fs from 'fs';
 import globby from 'globby';
 import config from 'yoshi-config';
 import * as globs from 'yoshi-config/globs';
-import { defaultEntry } from './constants';
+import getGitConfig from 'parse-git-config';
+import { defaultEntry, WIX_EMAIL_PATTERN } from './constants';
 
 export const exists = (
   patterns: string | ReadonlyArray<string>,
@@ -79,3 +80,23 @@ export const shouldDeployToCDN = (app: any) => {
 };
 
 export const isWebWorkerBundle = !!config.webWorkerEntry;
+
+export const guessSuricateTunnelId = (namespace: string) => {
+  const gitConfig = getGitConfig.sync({ include: true, type: 'global' });
+  const gitEmail = gitConfig.user ? gitConfig.user.email : '';
+  const processUser = process.env.USER;
+  let uniqueTunnelId;
+  if (gitEmail.endsWith(WIX_EMAIL_PATTERN)) {
+    uniqueTunnelId = gitEmail.replace(WIX_EMAIL_PATTERN, '');
+  } else if (processUser) {
+    uniqueTunnelId = processUser;
+  } else if (process.env.SURICATE_TUNNEL_ID) {
+    uniqueTunnelId = process.env.SURICATE_TUNNEL_ID;
+  } else {
+    return undefined;
+  }
+
+  const normalizedNamespace = namespace.replace('/', '-');
+
+  return `${uniqueTunnelId}.${normalizedNamespace}`;
+};
