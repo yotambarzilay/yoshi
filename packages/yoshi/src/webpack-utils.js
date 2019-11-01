@@ -212,6 +212,7 @@ function createDevServer(
       '.ooidev.com',
       '.deviantart.lan',
     ],
+    disableHostCheck: true,
     before(expressApp) {
       // Send cross origin headers
       expressApp.use(

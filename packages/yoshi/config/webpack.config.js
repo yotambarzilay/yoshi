@@ -47,6 +47,7 @@ const {
   validateServerEntry,
   calculatePublicPath,
 } = require('../src/webpack-utils');
+const { URL } = require('url');
 
 const { defaultEntry } = require('yoshi-helpers/constants');
 
@@ -839,7 +840,11 @@ function createClientWebpackConfig({
         app.suricate
           ? `${suricateURL}/tunnel/${guessSuricateTunnelId(
               `${app.name}-dev-server`,
-            )}/`
+            )}/?&sockPath=${
+              new URL(suricateURL).pathname
+            }/tunnel/${guessSuricateTunnelId(
+              `${app.name}-dev-server`,
+            )}/sockjs-node`
           : app.servers.cdn.url
       }`,
     ]);
