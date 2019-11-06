@@ -783,7 +783,6 @@ function createClientWebpackConfig({
           ]
         : []),
 
-      //https://github.com/FormidableLabs/webpack-stats-plugin
       ...(withStats
         ? [
             new StatsWriterPlugin({
