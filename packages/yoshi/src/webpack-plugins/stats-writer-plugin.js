@@ -1,7 +1,6 @@
 module.exports = class StatsWriterPlugin {
-  constructor(opts = {}) {
-    this.opts = opts;
-    this.opts.filename = opts.filename || 'stats.json';
+  constructor(filename = 'stats.json') {
+    this.filename = filename;
   }
   apply(compiler) {
     compiler.hooks.emit.tapPromise(
@@ -34,7 +33,7 @@ module.exports = class StatsWriterPlugin {
           }
 
           // Add to assets.
-          curCompiler.assets[this.opts.filename] = {
+          curCompiler.assets[this.filename] = {
             source() {
               return statsStr;
             },
