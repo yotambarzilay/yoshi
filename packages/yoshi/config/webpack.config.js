@@ -784,11 +784,7 @@ function createClientWebpackConfig({
         : []),
 
       ...(withStats
-        ? [
-            new StatsWriterPlugin({
-              filename: '../../target/webpack-stats.json',
-            }),
-          ]
+        ? [new StatsWriterPlugin('../../target/webpack-stats.json')]
         : []),
     ],
 
