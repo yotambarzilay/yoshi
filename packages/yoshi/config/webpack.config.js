@@ -786,7 +786,10 @@ function createClientWebpackConfig({
       ...(withStats
         ? [
             new StatsWriterPlugin({
-              filename: '../../target/webpack-stats.json',
+              filename: path.relative(
+                app.STATICS_DIR,
+                path.join(app.TARGET_DIR, 'webpack-stats.json'),
+              ),
               stats: {
                 all: true,
                 maxModules: Infinity,
