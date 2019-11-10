@@ -786,6 +786,8 @@ function createClientWebpackConfig({
       ...(withStats
         ? [
             new StatsWriterPlugin({
+              // path must be relative
+              // https://github.com/FormidableLabs/webpack-stats-plugin/blob/master/README.md#L170-L171
               filename: path.relative(
                 app.STATICS_DIR,
                 path.join(app.TARGET_DIR, 'webpack-stats.json'),
