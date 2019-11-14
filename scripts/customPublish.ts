@@ -1,10 +1,13 @@
-const path = require('path');
-const execSync = require('child_process').execSync;
-const chalk = require('chalk');
-const fs = require('fs');
-const semver = require('semver');
-const memoize = require('lodash/memoize');
-const get = require('lodash/get');
+import { execSync } from 'child_process';
+import execa from 'execa';
+import chalk from 'chalk';
+import semver from 'semver';
+import memoize from 'lodash/memoize';
+import get from 'lodash/get';
+import { PackageJson } from 'type-fest';
+// @ts-ignore
+import { getPackages } from '@lerna/project';
+import { Package } from '../packages/yoshi-flow-monorepo/src/load-package-graph';
 
 const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 const LATEST_TAG = 'latest';
@@ -14,7 +17,8 @@ const OLD_TAG = 'old';
 const getPackageDetails = memoize(pkg => {
   try {
     return JSON.parse(
-      execSync(`npm show ${pkg.name} --registry=${pkg.registry} --json`),
+      execa.sync(`npm show ${pkg.name} --registry=${pkg.registry} --json`)
+        .stdout,
     );
   } catch (error) {
     if (error.stderr.toString().includes('npm ERR! code E404')) {
@@ -32,23 +36,23 @@ const getPackageDetails = memoize(pkg => {
   }
 });
 
-function getPublishedVersions(pkg) {
+function getPublishedVersions(pkg: PackageJson) {
   return getPackageDetails(pkg).versions || [];
 }
 
-function getLatestVersion(pkg) {
+function getLatestVersion(pkg: PackageJson) {
   return get(getPackageDetails(pkg), 'dist-tags.latest');
 }
 
-function shouldPublishPackage(pkg) {
+function shouldPublishPackage(pkg: PackageJson) {
   const remoteVersionsList = getPublishedVersions(pkg);
 
   return !remoteVersionsList.includes(pkg.version);
 }
 
-function getTag(pkg) {
-  const isLessThanLatest = () => semver.lt(pkg.version, getLatestVersion(pkg));
-  const isPreRelease = () => semver.prerelease(pkg.version) !== null;
+function getTag(pkg: PackageJson) {
+  const isLessThanLatest = () => semver.lt(pkg.version!, getLatestVersion(pkg));
+  const isPreRelease = () => semver.prerelease(pkg.version!) !== null;
 
   // if the version is less than the version tagged as latest in the registry
   if (isLessThanLatest()) {
@@ -63,7 +67,7 @@ function getTag(pkg) {
   return LATEST_TAG;
 }
 
-function publish(pkg) {
+function publish(pkg: PackageJson) {
   const publishCommand = `npm publish ${pkg.pkgPath} --tag=${getTag(
     pkg,
   )} --registry=${pkg.registry}`;
@@ -73,7 +77,7 @@ function publish(pkg) {
   execSync(publishCommand, { stdio: 'inherit' });
 }
 
-function release(pkg) {
+function release(pkg: PackageJson) {
   if (pkg.private) {
     console.log(`> ${pkg.name}(private) - skip publish`);
     return;
@@ -93,23 +97,23 @@ function release(pkg) {
   );
 }
 
-// 1. Read package.json
-// 2. If the package is private, skip publish
-// 3. If the package already exist on the registry, skip publish.
-// 4. choose a dist-tag ->
-//    * `old` for a release that is less than latest (semver).
-//    * `next` for a prerelease (beta/alpha/rc).
-//    * `latest` as default.
-// 5. perform npm publish using the chosen tag.
+const packagesList = getPackages(process.cwd());
 
-const pkgPath = process.cwd();
-const pkgJsonPath = path.resolve(pkgPath, 'package.json');
-const pkg = JSON.parse(fs.readFileSync(pkgJsonPath));
+packagesList.forEach((pkg: Package) => {
+  // 1. Read package.json
+  // 2. If the package is private, skip publish
+  // 3. If the package already exist on the registry, skip publish.
+  // 4. choose a dist-tag ->
+  //    * `old` for a release that is less than latest (semver).
+  //    * `next` for a prerelease (beta/alpha/rc).
+  //    * `latest` as default.
+  // 5. perform npm publish using the chosen tag.
 
-release({
-  private: get(pkg, 'private'),
-  name: get(pkg, 'name'),
-  version: get(pkg, 'version'),
-  registry: get(pkg, 'publishConfig.registry', DEFAULT_REGISTRY),
-  pkgPath,
+  release({
+    private: pkg.private,
+    name: pkg.name,
+    version: pkg.version,
+    registry: get(pkg.toJSON(), 'publishConfig.registry', DEFAULT_REGISTRY),
+    pkgPath: pkg.location,
+  });
 });

@@ -11,7 +11,7 @@
     "bumpDocs": "npm run version --prefix './website' --",
     "createVersion": "node scripts/createVersion",
     "create-yoshi-app:dev": "npm run dev --prefix ./packages/create-yoshi-app",
-    "customPublish": "lerna exec 'node ../../scripts/customPublish.js'",
+    "customPublish": "ts-node -T ../../scripts/customPublish.js",
     "changelog": "lerna-changelog",
     "postinstall": "npm run bootstrap",
     "test": ":",
@@ -50,8 +50,11 @@
     ]
   },
   "devDependencies": {
+    "@lerna/project": "^3.18.0",
     "@types/fs-extra": "^8.0.1",
     "@types/jest": "24.0.15",
+    "@types/lodash": "^4.14.147",
+    "@types/semver": "^6.2.0",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
     "async-retry": "^1.2.3",
