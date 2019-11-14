@@ -11,6 +11,6 @@ describe('React application', () => {
     await driver.navigateToApp();
     await driver.waitForSelector('h2');
 
-    expect(await driver.getAppTitleText()).toEqual('Hello World!');
+    expect(await driver.getAppTitleText()).toEqual('Todo!');
   });
 });
