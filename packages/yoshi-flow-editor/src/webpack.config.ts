@@ -107,7 +107,13 @@ export function createWebWorkerWebpackConfig(
     isDev,
     isHot,
     customEntry,
-  }: { isDev?: boolean; isHot?: boolean; customEntry?: any } = {},
+    webWorkerExternals,
+  }: {
+    isDev?: boolean;
+    isHot?: boolean;
+    customEntry?: any;
+    webWorkerExternals?: any;
+  } = {},
 ): webpack.Configuration {
   const defaultOptions = createDefaultOptions(config);
 
@@ -125,7 +131,7 @@ export function createWebWorkerWebpackConfig(
 
   workerConfig.entry = customEntry;
 
-  workerConfig.externals = config.webWorkerExternals;
+  workerConfig.externals = webWorkerExternals;
 
   return workerConfig;
 }

@@ -20,6 +20,7 @@ import { cliCommand } from '../bin/yoshi-flow-editor';
 import {
   buildEditorPlatformEntries,
   buildViewerScriptEntry,
+  webWorkerExternals,
 } from '../buildEditorEntires';
 
 const join = (...dirs: Array<string>) => path.join(process.cwd(), ...dirs);
@@ -118,10 +119,12 @@ const build: cliCommand = async function(argv, config) {
   const webWorkerConfig = createWebWorkerWebpackConfig(config, {
     isDev: true,
     customEntry: webWorkerCustomEntry,
+    webWorkerExternals,
   });
 
   const webWorkerOptimizeConfig = createWebWorkerWebpackConfig(config, {
     customEntry: webWorkerCustomEntry,
+    webWorkerExternals,
   });
 
   const { stats } = await runWebpack([

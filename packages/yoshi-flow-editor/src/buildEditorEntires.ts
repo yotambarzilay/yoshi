@@ -57,3 +57,11 @@ export const buildViewerScriptEntry = () => {
     userInitApp[0],
   );
 };
+
+export const webWorkerExternals = {
+  lodash: {
+    commonjs: 'lodash',
+    amd: 'lodash',
+    root: '_',
+  },
+};

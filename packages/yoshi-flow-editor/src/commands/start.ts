@@ -14,6 +14,7 @@ import {
 import {
   buildEditorPlatformEntries,
   buildViewerScriptEntry,
+  webWorkerExternals,
 } from '../buildEditorEntires';
 
 const join = (...dirs: Array<string>) => path.join(process.cwd(), ...dirs);
@@ -100,6 +101,7 @@ const start: cliCommand = async function(argv, config) {
     isDev: true,
     isHot: true,
     customEntry: buildViewerScriptEntry(),
+    webWorkerExternals,
   });
 
   const devEnvironment = await DevEnvironment.create({
