@@ -90,14 +90,20 @@ class BMModule extends BusinessManagerModule {
       const methodId = `${getModuleId()}.methods.${filename}`;
 
       ModuleRegistry.registerMethod(methodId, () =>
-        require(`../poc/methods/${filename}`).default(this.state),
+        require(`../poc/methods/${filename}`).default({
+          get: () => this.state,
+          set: (newState: any) => (this.state = newState),
+        }),
       );
     });
   }
 
   init(moduleParams: IBMModuleParams) {
     if (customInit) {
-      customInit(this, moduleParams);
+      customInit(this, moduleParams, {
+        get: () => this.state,
+        set: (newState: any) => (this.state = newState),
+      });
     }
   }
 }

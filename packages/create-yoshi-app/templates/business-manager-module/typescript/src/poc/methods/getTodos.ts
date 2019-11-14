@@ -1,3 +1,3 @@
-const getTodos = (state: any) => async () => state.todos;
+const getTodos = ({ get }: any) => async () => get().todos;
 
 export default getTodos;
