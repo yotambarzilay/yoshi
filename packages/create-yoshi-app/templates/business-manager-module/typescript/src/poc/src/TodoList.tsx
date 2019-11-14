@@ -23,9 +23,7 @@ const TodoList: FC = () => {
         ))}
         <AddTodo onAdd={addTodo} />
       </ul>
-      <pre>
-        {'{'} foo: {'{'} bar: {'{'} "{config.foo.bar}" {'}'} {'}'} {'}'}
-      </pre>
+      <pre>{JSON.stringify(config, null, 2)}</pre>
     </div>
   );
 };
