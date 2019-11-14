@@ -1,13 +1,13 @@
-const path = require('path');
-const globby = require('globby');
-const componentWrapping = require('./componentWrapping');
-const editorAppWrapping = require('./editorAppWrapping');
-const settingsWrapping = require('./settingsWrapping');
-const viewerScriptWrapping = require('./viewerScriptWrapping');
+import path from 'path';
+import globby from 'globby';
+import componentWrapping from './componentWrapping';
+import editorAppWrapping from './editorAppWrapping';
+import settingsWrapping from './settingsWrapping';
+import viewerScriptWrapping from './viewerScriptWrapping';
 
 const generatedWidgetEntriesPath = path.resolve(__dirname, '../tmp/components');
 
-const buildEditorPlatformEntries = () => {
+export const buildEditorPlatformEntries = () => {
   const userComponents = globby.sync('./src/example/**/Component.js', {
     absolute: true,
   });
@@ -27,8 +27,8 @@ const buildEditorPlatformEntries = () => {
   const editorAppEntries = editorAppWrapping(
     generatedWidgetEntriesPath,
     userComponents,
-    userController,
-    userInitApp,
+    userController[0],
+    userInitApp[0],
   );
 
   const userSettings = globby.sync('./src/example/**/Settings.js', {
@@ -43,7 +43,7 @@ const buildEditorPlatformEntries = () => {
   return { ...componentEntries, ...editorAppEntries, ...settingsEntries };
 };
 
-const buildViewerScriptEntry = () => {
+export const buildViewerScriptEntry = () => {
   const userController = globby.sync('./src/example/**/controller.js', {
     absolute: true,
   });
@@ -54,8 +54,6 @@ const buildViewerScriptEntry = () => {
   return viewerScriptWrapping(
     generatedWidgetEntriesPath,
     userController,
-    userInitApp,
+    userInitApp[0],
   );
 };
-
-module.exports = { buildEditorPlatformEntries, buildViewerScriptEntry };
