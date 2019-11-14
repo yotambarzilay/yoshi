@@ -1,0 +1,12 @@
+{
+  "name": "yoshi-flow-bm",
+  "version": "4.20.6",
+  "bin": {
+    "yoshi-bm": "./build/bin/yoshi-bm.js"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Amit Dahan <amitda@wix.com>"
+}
