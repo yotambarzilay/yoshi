@@ -11,7 +11,7 @@
     "bumpDocs": "npm run version --prefix './website' --",
     "createVersion": "node scripts/createVersion",
     "create-yoshi-app:dev": "npm run dev --prefix ./packages/create-yoshi-app",
-    "customPublish": "ts-node -T ../../scripts/customPublish.js",
+    "customPublish": "ts-node -T ./scripts/customPublish.ts",
     "changelog": "lerna-changelog",
     "postinstall": "npm run bootstrap",
     "test": ":",
