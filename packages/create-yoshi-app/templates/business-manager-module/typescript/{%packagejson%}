@@ -45,7 +45,11 @@
     },
     "dependencies": {
       "axios": "^0.19.0",
+      "@sentry/browser": "^4.4.1",
       "@wix/fedops-logger": "^3.0.5",
+      "@wix/wix-experiments": "^3.0.277",
+      "@wix/wix-experiments-react": "^3.0.343",
+      "@wix/wnp-bootstrap-grpc": "^1.0.296",
       "i18next": "~8.4.0",
       "i18next-xhr-backend": "~1.4.0",
       "react-i18next": "~4.8.0",
@@ -65,7 +69,7 @@
     "yoshi": {
       "projectType": "app",
       "entry": {
-        "module": "./module"
+        "module": "./framework/BMModule"
       },
       "externals": {
         "react": "React",
@@ -74,7 +78,8 @@
         "lodash": "_",
         "urijs": "URI",
         "@wix/business-manager-api": "BusinessManagerAPI",
-        "react-module-container": "reactModuleContainer"
+        "react-module-container": "reactModuleContainer",
+        "@sentry/browser": "Sentry"
       }
     }
 }

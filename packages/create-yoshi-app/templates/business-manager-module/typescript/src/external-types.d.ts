@@ -21,7 +21,11 @@ declare module 'react-module-container' {
       pageComponentId: PageComponentId,
       componentFactory: () => any,
     ): void;
-    invoke(eventName: string, payload: any): void;
+    invoke(eventName: string, payload: any): any;
+    registerMethod(
+      methodId: string,
+      methodFn: (...args: Array<any>) => any,
+    ): void;
     component(name: string): typeof React.Component;
     addListener(
       eventName: string,
