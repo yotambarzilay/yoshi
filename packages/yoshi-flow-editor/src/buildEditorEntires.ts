@@ -4,6 +4,7 @@ import componentWrapping from './componentWrapping';
 import editorAppWrapping from './editorAppWrapping';
 import settingsWrapping from './settingsWrapping';
 import viewerScriptWrapping from './viewerScriptWrapping';
+import wixPrivateMockWrapping from './wixPrivateMockWrapping';
 
 const generatedWidgetEntriesPath = path.resolve(__dirname, '../tmp/components');
 
@@ -40,7 +41,14 @@ export const buildEditorPlatformEntries = () => {
     userSettings,
   );
 
-  return { ...componentEntries, ...editorAppEntries, ...settingsEntries };
+  const wixPrivateMockEntry = wixPrivateMockWrapping();
+
+  return {
+    ...wixPrivateMockEntry,
+    ...componentEntries,
+    ...editorAppEntries,
+    ...settingsEntries,
+  };
 };
 
 export const buildViewerScriptEntry = () => {

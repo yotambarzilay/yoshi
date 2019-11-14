@@ -4,4 +4,4 @@ const wixPrivateMockWrapper = () => {
   };
 };
 
-module.exports = wixPrivateMockWrapper;
+export default wixPrivateMockWrapper;
