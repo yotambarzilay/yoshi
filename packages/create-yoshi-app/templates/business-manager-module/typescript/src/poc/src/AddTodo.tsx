@@ -5,7 +5,7 @@ export interface AddTodoProps {
   onAdd?(todo: Todo): void;
 }
 
-const AddTodo: FC<AddTodoProps> = ({ onAdd = () => { } }) => {
+const AddTodo: FC<AddTodoProps> = ({ onAdd = () => {} }) => {
   const [text, setText] = useState('');
   const [done, setDone] = useState(false);
 
