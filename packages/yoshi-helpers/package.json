@@ -27,6 +27,7 @@
   "peerDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-modules-commonjs": "7.6.0",
+    "babel-preset-yoshi": "4.14.0",
     "typescript": "^2.9.0 || ^3.0.0"
   },
   "devDependencies": {
@@ -40,7 +41,6 @@
     "@types/server-destroy": "1.0.0",
     "@types/webpack": "4.39.8",
     "@types/xmldoc": "1.1.4",
-    "babel-preset-yoshi": "4.14.0",
     "typescript": "3.5.3"
   }
 }
