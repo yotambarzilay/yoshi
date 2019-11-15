@@ -12,8 +12,8 @@ export const appDriver = () => {
       await page.goto(await testKitEnv.getUrl(`${metaSiteId}/{%projectName%}`));
     },
     getAppTitleText: async () => {
-      await waitForVisibilityOf('h2');
-      return page.$eval('h2', e => e.textContent);
+      await waitForVisibilityOf('h1');
+      return page.$eval('h1', e => e.textContent);
     },
     waitForSelector: waitForVisibilityOf,
   };
