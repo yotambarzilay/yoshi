@@ -108,4 +108,4 @@ class BMModule extends BusinessManagerModule {
   }
 }
 
-registerModule(getModuleId(), BMModule);
+registerModule('{%PROJECT_NAME%}' as ModuleId, BMModule);
