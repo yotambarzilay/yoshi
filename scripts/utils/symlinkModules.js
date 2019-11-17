@@ -2,13 +2,15 @@ const fs = require('fs-extra');
 const path = require('path');
 const execa = require('execa');
 
-module.exports.getYoshiModulesList = () => {
+const getYoshiPackages = () => {
   const { stdout: rawPackages } = execa.sync('npx lerna list --all --json', {
     shell: true,
   });
 
-  return JSON.parse(rawPackages).map(x => x.name);
+  return JSON.parse(rawPackages);
 };
+
+module.exports.getYoshiModulesList = () => getYoshiPackages().map(x => x.name);
 
 module.exports.symlinkModules = repoDirectory => {
   const parentDirectory = path.dirname(repoDirectory);
@@ -19,12 +21,6 @@ module.exports.symlinkModules = repoDirectory => {
     path.join(parentDirectory, 'node_modules'),
   );
 
-  // Link yoshi's `.bin` to the parent directory of the tested module
-  fs.ensureSymlinkSync(
-    path.join(__dirname, '../../packages/yoshi/bin/yoshi-cli.js'),
-    path.join(parentDirectory, 'node_modules/.bin/yoshi'),
-  );
-
   const symlinkPackage = packageName => {
     fs.removeSync(path.join(repoDirectory, 'node_modules', packageName));
     fs.ensureSymlinkSync(
@@ -33,22 +29,29 @@ module.exports.symlinkModules = repoDirectory => {
     );
   };
 
-  const packageJsonPath = path.join(repoDirectory, 'package.json');
-  const pkg = fs.readJsonSync(packageJsonPath);
+  const symlinkPackageBins = packageDir => {
+    const { bin: bins = {} } = fs.readJSONSync(
+      path.join(packageDir, 'package.json'),
+    );
 
-  const projectDependencies = [];
+    Object.keys(bins).forEach(bin =>
+      fs.ensureSymlinkSync(
+        path.join(packageDir, bins[bin]),
+        path.join(repoDirectory, `node_modules/.bin/${bin}`),
+      ),
+    );
+  };
 
-  if (pkg.dependencies) {
-    projectDependencies.push(...Object.keys(pkg.dependencies));
-  }
+  getYoshiPackages().forEach(({ name, location }) => {
+    const pkg = fs.readJsonSync(path.join(repoDirectory, 'package.json'));
+    const { dependencies = {}, devDependencies = {} } = pkg;
 
-  if (pkg.devDependencies) {
-    projectDependencies.push(...Object.keys(pkg.devDependencies));
-  }
+    if (devDependencies[name] || dependencies[name]) {
+      symlinkPackage(name);
 
-  exports
-    .getYoshiModulesList()
-    // only symlink yoshi modules which are project dependencies
-    .filter(moduleName => projectDependencies.includes(moduleName))
-    .forEach(symlinkPackage);
+      if (devDependencies[name]) {
+        symlinkPackageBins(location);
+      }
+    }
+  });
 };
