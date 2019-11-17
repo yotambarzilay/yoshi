@@ -10,7 +10,9 @@
   ],
   "author": "Ran Yitzhaki & Ronen Amiel",
   "main": "build/index.js",
-  "bin": "build/bin/create-yoshi-app.js",
+  "bin": {
+    "create-yoshi-app": "build/bin/create-yoshi-app.js"
+  },
   "scripts": {
     "test": "jest",
     "templates": "ts-node scripts/runE2E.js",
