@@ -656,6 +656,7 @@ export function createBaseWebpackConfig({
                 extension: '.svx',
               }),
             ],
+            immutable: true,
             dev: isDev,
             emitCss: target !== 'node',
             generate: target === 'node' ? 'ssr' : 'dom',
